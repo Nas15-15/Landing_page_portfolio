@@ -5,14 +5,12 @@ import { motion } from "framer-motion";
 import { Phone, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FormModal from "@/components/modals/form-modal";
-import PurchaseForm from "@/components/forms/purchase-form";
 import QuoteForm from "@/components/forms/quote-form";
 
 import { siteConfig } from "@/config/site";
 
 export default function BookingSection() {
   const { phone, location } = siteConfig.contact;
-  const [isPurchaseOpen, setIsPurchaseOpen] = useState(false);
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
 
   return (
@@ -34,23 +32,15 @@ export default function BookingSection() {
               Fill out the form. Tell us about your business. We&apos;ll build you a page that actually converts — delivered in 48 hours.
             </p>
 
-            {/* Two action buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Button
-                onClick={() => setIsPurchaseOpen(true)}
-                size="lg"
-                pulse
-                className="text-lg"
-              >
-                Get My Page — $199
-              </Button>
+            {/* Action button */}
+            <div className="flex justify-center mb-12">
               <Button
                 onClick={() => setIsQuoteOpen(true)}
                 size="lg"
-                variant="secondary"
-                className="text-lg"
+                pulse
+                className="text-lg px-8 py-4"
               >
-                Get a Free Quote
+                Get a Free Quote &rarr;
               </Button>
             </div>
 
@@ -85,18 +75,7 @@ export default function BookingSection() {
         </div>
       </div>
 
-      {/* Modals */}
-      <FormModal
-        isOpen={isPurchaseOpen}
-        onClose={() => setIsPurchaseOpen(false)}
-        title="Get My Page — $199"
-      >
-        <PurchaseForm
-          onSuccess={() => setIsPurchaseOpen(false)}
-          onClose={() => setIsPurchaseOpen(false)}
-        />
-      </FormModal>
-
+      {/* Modal */}
       <FormModal
         isOpen={isQuoteOpen}
         onClose={() => setIsQuoteOpen(false)}

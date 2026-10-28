@@ -7,12 +7,6 @@
 (function () {
   'use strict';
 
-  // ─── Inject PayPal SDK ─────────────────────────────────────────
-  const paypalScript = document.createElement('script');
-  paypalScript.src = "https://www.paypal.com/sdk/js?client-id=Aejwo1SCLifR_oPg6a-FBMIzpxBE6yUaELiMu7-k8hpw3VTNi7dDOJGhBNgB_DtLE8FbJMVL6nK2PrLh&vault=true&intent=subscription";
-  paypalScript.setAttribute("data-sdk-integration-source", "button-factory");
-  document.head.appendChild(paypalScript);
-
   // ─── Inject Modern CSS ─────────────────────────────────────────
   const style = document.createElement('style');
   style.textContent = `
@@ -367,189 +361,6 @@
     document.querySelector('#nl-quote-form input[name="email"]').addEventListener('blur', captureGhostLead);
   }
 
-  // ─── Purchase Modal ($199) ────────────────────────────────────
-  function createPurchaseModal() {
-    const overlay = document.createElement('div');
-    overlay.className = 'nl-modal-overlay';
-    overlay.id = 'nl-purchase-overlay';
-    overlay.innerHTML = `
-      <div class="nl-modal">
-        <button class="nl-modal-close" onclick="closePurchaseModal()">&times;</button>
-        <div id="nl-purchase-form-wrap">
-          <div class="nl-modal-badge" style="background: #EFF6FF; color: #2563EB;">48-Hour Delivery</div>
-          <h2 class="nl-modal-title">The Landing Page.</h2>
-          <div class="nl-price-amount" style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
-            <span style="text-decoration: line-through; color: #94A3B8; font-size: 1.75rem; font-weight: 500;">$699</span>
-            <span style="color: #0F172A; font-size: 2.5rem; font-weight: 700;">$399</span>
-          </div>
-          <div class="nl-form-error" id="nl-purchase-error"></div>
-          
-          <form id="nl-purchase-form">
-            
-            <!-- STEP 1 -->
-            <div id="nl-step-1">
-              <div class="nl-form-row">
-                <div class="nl-form-group">
-                  <label class="nl-form-label">Name <span class="required">*</span></label>
-                  <input class="nl-form-input" type="text" name="name" required>
-                </div>
-                <div class="nl-form-group">
-                  <label class="nl-form-label">Email <span class="required">*</span></label>
-                  <input class="nl-form-input" type="email" name="email" id="nl-purchase-email" required>
-                </div>
-              </div>
-              <button type="button" class="nl-form-submit nl-btn-purchase" id="nl-next-step">
-                Secure Your Page &rarr;
-              </button>
-            </div>
-
-            <!-- STEP 2 -->
-            <div id="nl-step-2" style="display: none;">
-              <button type="button" onclick="document.getElementById('nl-step-2').style.display='none'; document.getElementById('nl-step-1').style.display='block';" style="background:transparent; border:none; color:#64748B; font-size:0.9rem; cursor:pointer; margin-bottom:20px; font-weight:500; padding:0;">&larr; Back</button>
-              
-              <div class="nl-form-group">
-                <label class="nl-form-label">Phone <span class="required">*</span></label>
-                <input class="nl-form-input" type="tel" name="phone">
-              </div>
-
-              <div class="nl-form-group">
-                <label class="nl-form-label">Brand URL</label>
-                <input class="nl-form-input" type="url" name="website" placeholder="https://">
-              </div>
-
-              <div class="nl-form-group">
-                <label class="nl-form-label">About Your Business & Needs <span class="required">*</span></label>
-                <textarea class="nl-form-textarea" name="needs" placeholder="Who are your customers? What is the main goal?" required></textarea>
-              </div>
-
-              <div id="paypal-button-container-P-9XC76806RC000293YNH3T6VY" style="margin-top: 24px; min-height: 55px;"></div>
-
-              <div style="margin-top: 20px; padding: 15px; background: #F8FAFC; border-radius: 8px; display: flex; gap: 15px; align-items: center;">
-                <img src="/founder.png" alt="Nas" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
-                <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4; font-style: italic;">
-                  "I personally guarantee you'll love this site, or I'll refund every penny. No questions asked." <br><strong style="font-style: normal;">- Nas, Founder</strong>
-                </p>
-              </div>
-
-              <div class="nl-secure-badge">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-                Encrypted Checkout Protocol by PayPal
-              </div>
-            </div>
-            
-          </form>
-        </div>
-
-        <div class="nl-form-feedback" id="nl-purchase-success">
-          <h2 class="nl-modal-title">You're in — we'll start within 24 hours.</h2>
-          <p class="nl-modal-subtitle">Redirecting to PayPal...</p>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(overlay);
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) closePurchaseModal(); });
-    
-    // Ghost Capture state
-    let hasCapturedPartial = false;
-
-    // Ghost Capture Function
-    async function captureGhostLead() {
-      if (hasCapturedPartial) return;
-      const email = document.getElementById('nl-purchase-email').value.trim();
-      const name = document.querySelector('#nl-purchase-form input[name="name"]').value.trim();
-      const website = document.querySelector('#nl-purchase-form input[name="website"]').value.trim();
-      
-      const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
-      if (!email || !emailRegex.test(email)) return;
-
-      hasCapturedPartial = true;
-      try {
-        await fetch('/api/lead-form', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ isPartial: true, email, name, website, formType: 'purchase' })
-        });
-      } catch (err) {
-        hasCapturedPartial = false; // allow retry if failed
-      }
-    }
-
-    // Capture on blur
-    document.getElementById('nl-purchase-email').addEventListener('blur', captureGhostLead);
-
-    // Step Transition
-    document.getElementById('nl-next-step').addEventListener('click', () => {
-      const form = document.getElementById('nl-purchase-form');
-      if (!form.name.checkValidity() || !form.email.checkValidity()) {
-        form.reportValidity();
-        return;
-      }
-      captureGhostLead();
-      document.getElementById('nl-step-1').style.display = 'none';
-      document.getElementById('nl-step-2').style.display = 'block';
-
-      function renderPayPal() {
-        if (window.paypalRendered) return;
-        if (!window.paypal) {
-          setTimeout(renderPayPal, 100);
-          return;
-        }
-        window.paypalRendered = true;
-        paypal.Buttons({
-          style: {
-              shape: 'pill',
-              color: 'gold',
-              layout: 'vertical',
-              label: 'paypal'
-          },
-          onClick: async function(data, actions) {
-            const form = document.getElementById('nl-purchase-form');
-            if (!form.phone.value.trim() || !form.needs.value.trim()) {
-              const errorEl = document.getElementById('nl-purchase-error');
-              errorEl.textContent = "Please fill out all required fields.";
-              errorEl.classList.add('active');
-              return actions.reject();
-            }
-            document.getElementById('nl-purchase-error').classList.remove('active');
-            
-            // Post lead silently
-            const formData = {
-              formType: 'purchase',
-              name: form.name.value.trim(),
-              email: form.email.value.trim(),
-              phone: form.phone.value.trim(),
-              website: form.website.value.trim(),
-              needs: form.needs.value.trim()
-            };
-            try {
-              await fetch('/api/lead-form', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-              });
-            } catch(e) {}
-            
-            return actions.resolve();
-          },
-          createSubscription: function(data, actions) {
-            return actions.subscription.create({
-              plan_id: 'P-9XC76806RC000293YNH3T6VY'
-            });
-          },
-          onApprove: function(data, actions) {
-            document.getElementById('nl-purchase-form-wrap').style.display = 'none';
-            document.getElementById('nl-purchase-success').classList.add('active');
-          }
-        }).render('#paypal-button-container-P-9XC76806RC000293YNH3T6VY');
-      }
-      
-      renderPayPal();
-    });
-
-    // Remove old submit listener to prevent standard form submission
-    document.getElementById('nl-purchase-form').addEventListener('submit', (e) => e.preventDefault());
-  }
-
   // ─── Modal State ──────────────────────────────────────────────
   window.openQuoteModal = function () {
     document.getElementById('nl-quote-overlay').classList.add('active');
@@ -564,21 +375,16 @@
     document.body.classList.remove('nl-modal-open');
   };
 
+  // Legacy purchase buttons route seamlessly to quote request
   window.openPurchaseModal = function () {
-    document.getElementById('nl-purchase-overlay').classList.add('active');
-    document.body.classList.add('nl-modal-open');
-    document.getElementById('nl-purchase-form').reset();
-    document.getElementById('nl-purchase-form-wrap').style.display = '';
-    document.getElementById('nl-purchase-success').classList.remove('active');
-    document.getElementById('nl-purchase-error').classList.remove('active');
+    window.openQuoteModal();
   };
   window.closePurchaseModal = function () {
-    document.getElementById('nl-purchase-overlay').classList.remove('active');
-    document.body.classList.remove('nl-modal-open');
+    window.closeQuoteModal();
   };
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') { closeQuoteModal(); closePurchaseModal(); }
+    if (e.key === 'Escape') { closeQuoteModal(); }
   });
 
   // ─── Submission Handlers ──────────────────────────────────────
@@ -629,11 +435,9 @@
     }
   }
 
-  // removed handlePurchaseSubmit as it is now handled by paypal.Buttons
-
-  // Auto-initialize
+  // Auto-initialize Quote Modal
   createQuoteModal();
-  createPurchaseModal();
 
 })();
+
 

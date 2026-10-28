@@ -26,7 +26,7 @@ export const siteConfig = {
                 "1 Round of Revisions",
                 "Ready in 48 Hours",
             ],
-            cta: "Start Growing Today",
+            cta: "Get Free Quote",
         },
         {
             name: "The Growth",

@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Zap } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import FormModal from "@/components/modals/form-modal";
-import PurchaseForm from "@/components/forms/purchase-form";
+import QuoteForm from "@/components/forms/quote-form";
 
 export default function FloatingActionButton() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,18 +18,18 @@ export default function FloatingActionButton() {
         animate={{ opacity: 1, scale: 1 }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
-        aria-label="Get started"
+        aria-label="Get a free quote"
       >
-        <Zap className="w-5 h-5" />
-        <span>$199</span>
+        <MessageSquare className="w-5 h-5" />
+        <span>Get Quote</span>
       </motion.button>
 
       <FormModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        title="Get My Page — $199"
+        title="Get a Free Quote"
       >
-        <PurchaseForm
+        <QuoteForm
           onSuccess={() => setIsOpen(false)}
           onClose={() => setIsOpen(false)}
         />

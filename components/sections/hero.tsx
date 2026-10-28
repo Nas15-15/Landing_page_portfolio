@@ -4,11 +4,9 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import FormModal from "@/components/modals/form-modal";
-import PurchaseForm from "@/components/forms/purchase-form";
 import QuoteForm from "@/components/forms/quote-form";
 
 export default function Hero() {
-  const [isPurchaseOpen, setIsPurchaseOpen] = useState(false);
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
 
   return (
@@ -79,46 +77,27 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-xl sm:text-2xl md:text-3xl text-slate-400 mb-10 max-w-3xl mx-auto"
         >
-          Naslogic is a Fort Myers agency building custom landing pages for $199 flat. No 5-page digital brochures. Just one page that makes it easy for locals to hire you.
+          Naslogic is a Fort Myers agency building custom, high-converting landing pages. No 5-page digital brochures. Just one page that makes it easy for locals to hire you.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="flex justify-center"
         >
-          <Button
-            onClick={() => setIsPurchaseOpen(true)}
-            size="lg"
-            pulse
-            className="text-lg"
-          >
-            Get My Page — $199
-          </Button>
           <Button
             onClick={() => setIsQuoteOpen(true)}
             size="lg"
-            variant="secondary"
-            className="text-lg"
+            pulse
+            className="text-lg px-8 py-4"
           >
-            Get a Free Quote
+            Get a Free Quote &rarr;
           </Button>
         </motion.div>
       </div>
 
-      {/* Modals */}
-      <FormModal
-        isOpen={isPurchaseOpen}
-        onClose={() => setIsPurchaseOpen(false)}
-        title="Get My Page — $199"
-      >
-        <PurchaseForm
-          onSuccess={() => setIsPurchaseOpen(false)}
-          onClose={() => setIsPurchaseOpen(false)}
-        />
-      </FormModal>
-
+      {/* Modal */}
       <FormModal
         isOpen={isQuoteOpen}
         onClose={() => setIsQuoteOpen(false)}

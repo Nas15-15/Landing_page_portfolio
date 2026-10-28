@@ -31,7 +31,7 @@ const testimonials = [
   },
   {
     quote: "Nas joined the call twice,shared his vision and did some help for us for the main page (landing page). Overral everything was great. Thanks for your work!",
-    name: "Питбуль Ева",
+    name: "donaboon",
     business: "Landing Page Client",
   },
 ];

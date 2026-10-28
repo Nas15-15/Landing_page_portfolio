@@ -5,12 +5,10 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import FormModal from "@/components/modals/form-modal";
-import PurchaseForm from "@/components/forms/purchase-form";
 import QuoteForm from "@/components/forms/quote-form";
 import { siteConfig } from "@/config/site";
 
 export default function Pricing() {
-  const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
 
   return (
@@ -74,7 +72,7 @@ export default function Pricing() {
                     <Button
                       variant={tier.popular ? "primary" : "secondary"}
                       className="w-full"
-                      onClick={() => index === 0 ? setIsPurchaseModalOpen(true) : setIsQuoteModalOpen(true)}
+                      onClick={() => setIsQuoteModalOpen(true)}
                     >
                       {tier.cta}
                     </Button>
@@ -85,17 +83,6 @@ export default function Pricing() {
           ))}
         </div>
       </div>
-
-      <FormModal
-        isOpen={isPurchaseModalOpen}
-        onClose={() => setIsPurchaseModalOpen(false)}
-        title="Get My Page — $399"
-      >
-        <PurchaseForm
-          onSuccess={() => setIsPurchaseModalOpen(false)}
-          onClose={() => setIsPurchaseModalOpen(false)}
-        />
-      </FormModal>
 
       <FormModal
         isOpen={isQuoteModalOpen}

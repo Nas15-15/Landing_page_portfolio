@@ -511,7 +511,7 @@ NEW_BODY = """    <!-- Google Fonts -->
             <div class="nav-links">
                 <a href="#autopsy">The Truth</a>
                 <a href="#pricing">Pricing</a>
-                <a href="javascript:void(0)" onclick="openPurchaseModal()" class="btn btn-outline" style="padding: 12px 24px;">Start Project</a>
+                <a href="javascript:void(0)" onclick="openQuoteModal()" class="btn btn-outline" style="padding: 12px 24px;">Get a Quote</a>
             </div>
         </div>
     </nav>
@@ -602,7 +602,7 @@ NEW_BODY = """    <!-- Google Fonts -->
                         <li>Delivered in 48 Hours</li>
                         <li>Zero recurring software fees</li>
                     </ul>
-                    <a href="javascript:void(0)" onclick="openPurchaseModal()" class="btn btn-outline" style="width: 100%; border-color: #444;">Purchase Now - $199</a>
+                    <a href="javascript:void(0)" onclick="openQuoteModal()" class="btn btn-outline" style="width: 100%; border-color: #444;">Get Free Quote</a>
                 </div>
 
             </div>
@@ -614,7 +614,7 @@ NEW_BODY = """    <!-- Google Fonts -->
         <div class="container">
             <h2 class="ultimatum-text gs-reveal">Stop losing calls to competitors with better websites.</h2>
             <div class="gs-reveal">
-                <a href="javascript:void(0)" onclick="openPurchaseModal()" class="btn btn-primary">Fix It Now</a>
+                <a href="javascript:void(0)" onclick="openQuoteModal()" class="btn btn-primary">Get a Free Quote</a>
             </div>
         </div>
     </section>
